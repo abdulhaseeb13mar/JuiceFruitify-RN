@@ -4,17 +4,26 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Measurements} from '../UsResuables/Measurement';
 import {colors} from '../UsResuables/frequentColors';
 
-export default function SearchBar(props) {
+export default function SearchBar({editable, changeSearchText}) {
   const [isFocused, setisFocused] = useState(false);
 
   const ChangeFocus = (bool) => {
     setisFocused(bool);
   };
 
-  const onChangeText = (t) => props.changeSearchText(t);
+  const onChangeText = (t) => changeSearchText(t);
 
   return (
     <View style={styles.SB_Wrapper}>
+      <TextInput
+        style={styles.SB_input}
+        placeholderTextColor={colors.lightGrey1}
+        editable={editable}
+        placeholder="What would you like?"
+        onBlur={() => ChangeFocus(false)}
+        onFocus={() => ChangeFocus(true)}
+        onChangeText={onChangeText}
+      />
       <View style={styles.SB_icon}>
         <FontAwesome
           name="search"
@@ -22,14 +31,6 @@ export default function SearchBar(props) {
           color={isFocused ? colors.primary : colors.lightGrey1}
         />
       </View>
-      <TextInput
-        style={styles.SB_input}
-        editable={props.editable && props.editable}
-        placeholder="Search Lamps here"
-        onBlur={() => ChangeFocus(false)}
-        onFocus={() => ChangeFocus(true)}
-        onChangeText={onChangeText}
-      />
     </View>
   );
 }

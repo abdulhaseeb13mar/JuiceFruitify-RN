@@ -2,19 +2,19 @@ export default {
   category: [
     {
       id: '1',
-      category: 'milk ',
+      category: 'Milk ',
     },
     {
       id: '2',
-      category: 'juice',
+      category: 'Juice',
     },
     {
       id: '3',
-      category: 'tea ',
+      category: 'Tea ',
     },
     {
       id: '4',
-      category: 'coffee',
+      category: 'Coffee',
     },
   ],
   product: [
@@ -24,7 +24,7 @@ export default {
       name: 'Date Milkshake',
       rating: '3.8',
       price: '3',
-      images: "require('./assets/images/a1.png')",
+      images: require('./UsPics/a1.png'),
     },
     {
       id: '2',
@@ -32,7 +32,7 @@ export default {
       name: 'Chocolate Malt Milkshake',
       rating: '4.5',
       price: '2.88',
-      images: "require('./assets/images/a2.png')",
+      images: require('./UsPics/a2.png'),
     },
     {
       id: '3',
@@ -40,7 +40,7 @@ export default {
       name: 'Almond Saffron Milkshake',
       rating: '3.9',
       price: '3.5',
-      images: "require('./assets/images/a3.png')",
+      images: require('./UsPics/a3.png'),
     },
     {
       id: '4',
@@ -48,7 +48,7 @@ export default {
       name: 'Musk Melon Milkshake',
       rating: '3.5',
       price: '4',
-      images: "require('./assets/images/a4.png')",
+      images: require('./UsPics/a4.png'),
     },
     {
       id: '5',
@@ -56,7 +56,7 @@ export default {
       name: 'Banana Milkshake',
       rating: '4',
       price: '4.5',
-      images: "require('./assets/images/a5.png')",
+      images: require('./UsPics/a5.png'),
     },
     {
       id: '6',
@@ -64,7 +64,7 @@ export default {
       name: 'Beetroot Milkshake',
       rating: '3.4',
       price: '5',
-      images: "require('./assets/images/a6.png')",
+      images: require('./UsPics/a6.png'),
     },
     {
       id: '7',
@@ -72,7 +72,7 @@ export default {
       name: 'Chocolate Hazelnut Milkshake',
       rating: '3.6',
       price: '3.5',
-      images: "require('./assets/images/a7.png')",
+      images: require('./UsPics/a7.png'),
     },
     {
       id: '8',
@@ -80,7 +80,7 @@ export default {
       name: 'Apple',
       rating: '3.8',
       price: '2.99',
-      images: "require('./assets/images/b1.png')",
+      images: require('./UsPics/b1.png'),
     },
     {
       id: '9',
@@ -88,23 +88,23 @@ export default {
       name: 'Kiwi Juice',
       rating: '4.1',
       price: '4',
-      images: "require('./assets/images/b2.png')",
+      images: require('./UsPics/b2.png'),
     },
     {
       id: '10',
       categoryId: '2',
       name: 'Cranberry',
       rating: '3.9',
-      price: '1.5',
-      images: "require('./assets/images/b3.png')",
+      price: '15',
+      images: require('./UsPics/b3.png'),
     },
     {
       id: '11',
       categoryId: '2',
       name: 'Prune',
       rating: '3.3',
-      price: '1,8',
-      images: "require('./assets/images/b4.png')",
+      price: '18',
+      images: require('./UsPics/b4.png'),
     },
     {
       id: '12',
@@ -112,7 +112,7 @@ export default {
       name: 'Orange',
       rating: '4.2',
       price: '2',
-      images: "require('./assets/images/b5.png')",
+      images: require('./UsPics/b5.png'),
     },
     {
       id: '13',
@@ -120,7 +120,7 @@ export default {
       name: 'Acai berry',
       rating: '3.6',
       price: '3',
-      images: "require('./assets/images/b6.png')",
+      images: require('./UsPics/b6.png'),
     },
     {
       id: '14',
@@ -128,7 +128,7 @@ export default {
       name: 'Black Tea',
       rating: '3.7',
       price: '5',
-      images: "require('./assets/images/c1.png')",
+      images: require('./UsPics/c1.png'),
     },
     {
       id: '15',
@@ -136,7 +136,7 @@ export default {
       name: 'Earl Grey',
       rating: '3.2',
       price: '4.99',
-      images: "require('./assets/images/c2.png')",
+      images: require('./UsPics/c2.png'),
     },
     {
       id: '16',
@@ -144,7 +144,7 @@ export default {
       name: 'Green Tea',
       rating: '4.8',
       price: '3.5',
-      images: "require('./assets/images/c3.png')",
+      images: require('./UsPics/c3.png'),
     },
     {
       id: '17',
@@ -152,7 +152,7 @@ export default {
       name: 'Oolong Tea',
       rating: '3.2',
       price: '6',
-      images: "require('./assets/images/c4.png')",
+      images: require('./UsPics/c4.png'),
     },
     {
       id: '18',
@@ -160,7 +160,7 @@ export default {
       name: 'Doppio',
       rating: '3.4',
       price: '4.99',
-      images: "require('./assets/images/d1.png')",
+      images: require('./UsPics/d1.png'),
     },
     {
       id: '19',
@@ -168,7 +168,7 @@ export default {
       name: 'Cortado',
       rating: '3.8',
       price: '3',
-      images: "require('./assets/images/d2.png')",
+      images: require('./UsPics/d2.png'),
     },
     {
       id: '20',
@@ -176,7 +176,7 @@ export default {
       name: 'Red Eye',
       rating: '3.5',
       price: '2.88',
-      images: "require('./assets/images/d3.png')",
+      images: require('./UsPics/d3.png'),
     },
     {
       id: '21',
@@ -184,7 +184,7 @@ export default {
       name: 'Galão',
       rating: '3.8',
       price: '3.5',
-      images: "require('./assets/images/d4.png')",
+      images: require('./UsPics/d4.png'),
     },
     {
       id: '22',
@@ -192,7 +192,7 @@ export default {
       name: 'Lungo',
       rating: '3.5',
       price: '4',
-      images: "require('./assets/images/d5.png')",
+      images: require('./UsPics/d5.png'),
     },
     {
       id: '23',
@@ -200,7 +200,7 @@ export default {
       name: 'Macchiato',
       rating: '4',
       price: '4.5',
-      images: "require('./assets/images/d6.png')",
+      images: require('./UsPics/d6.png'),
     },
   ],
   details: [

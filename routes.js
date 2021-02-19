@@ -5,8 +5,8 @@ import {
 } from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import Navigator from './UsResuables/RefNavigation';
-import OurHome from './Main/UsHome';
-// import OurSingleProduct from './Main/OurSingleProduct';
+import UsHome from './Main/UsHome';
+import UsSingleProduct from './Main/UsSingleProduct';
 // import PersonalInfoShiningLamp from './Main/PersonalInfoShiningLamp';
 // import SearchShiningLamp from './Main/SearchShiningLamp';
 // import OurFavourites from './Main/OurFavourites';
@@ -19,13 +19,13 @@ function Routes(props) {
         Navigator.InitializeRefNavigation(ref);
       }}>
       <Stack.Navigator
-        initialRouteName="OurHome"
+        initialRouteName="UsHome"
         screenOptions={{
           headerShown: false,
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}>
-        <Stack.Screen name="OurHome" component={OurHome} />
-        {/* <Stack.Screen name="OurSingleProduct" component={OurSingleProduct} /> */}
+        <Stack.Screen name="UsHome" component={UsHome} />
+        <Stack.Screen name="UsSingleProduct" component={UsSingleProduct} />
         {/* <Stack.Screen
           name="PersonalInfoShiningLamp"
           component={PersonalInfoShiningLamp}

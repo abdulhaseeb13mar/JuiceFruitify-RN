@@ -92,8 +92,8 @@ function MyHeader({
 const styles = StyleSheet.create({
   badgeContainer: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
+    top: 0,
+    right: 0,
   },
   IconWrap: {
     display: 'flex',
@@ -101,15 +101,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 5,
     borderRadius: 10,
-    // backgroundColor: ,
-    // elevation: 2,
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 1.41,
   },
   HeaderText: {
     fontWeight: 'bold',
@@ -133,7 +124,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  totalItems: state.UsUserReducer.totalItems,
+  totalItems: state.UsCartReducer.totalItems,
 });
 
 export default connect(mapStateToProps, {})(MyHeader);

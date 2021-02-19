@@ -7,11 +7,12 @@ import {
   UssetFavAction,
   UssetCurrentProductAction,
 } from '../UsReduxStore/UsActions';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 import UseHeader from '../UsResuables/MyHeader';
 import WrapperScreen from '../UsResuables/WrapperScreen';
 import NavigationRef from '../UsResuables/RefNavigation';
-import {NewArrivals} from './UsHome';
+import Loop from '../UsResuables/looping';
+import {FruityTiles} from './UsHome';
 import {Measurements} from '../UsResuables/Measurement';
 const UsFavourites = (props) => {
   const UsGoToSingleProduct = (item) => {
@@ -23,30 +24,35 @@ const UsFavourites = (props) => {
 
   return (
     <WrapperScreen style={{backgroundColor: 'white'}}>
+      <UseHeader
+        leftIcon={Entypo}
+        leftIconName="chevron-left"
+        leftIconAction={UsGoBack}
+        Title="Favourites"
+      />
+      <Text
+        style={{
+          textAlign: 'center',
+          fontSize: Measurements.width * 0.05,
+          fontWeight: 'bold',
+          marginTop: Measurements.height * 0.08,
+        }}>
+        You have {props.UsFavs.length} Favourite items
+      </Text>
       <ScrollView bounces={false}>
-        <UseHeader
-          leftIcon={AntDesign}
-          leftIconName="arrowleft"
-          leftIconAction={UsGoBack}
-          Title="Favourites"
-        />
         <View style={styles.fav_SL1}>
-          {props.ourFavs.length > 0 ? (
-            props.ourFavs.map((item, index) => {
-              return (
-                <NewArrivals
-                  key={item.id}
-                  item={{...item}}
-                  UsFavs={props.ourFavs}
-                  UsRemoveFavAct={(i) => props.UsremoveFavAction(i)}
-                  UsSetFavAct={(i) => props.UssetFavAction(i)}
-                  UsGoToSingleProduct={UsGoToSingleProduct}
-                />
-              );
-            })
-          ) : (
-            <Text style={styles.fav_SL2}>No Favourites...</Text>
-          )}
+          <Loop
+            data={props.UsFavs}
+            renderItem={({item}) => (
+              <FruityTiles
+                item={item}
+                UsGoToSingleProduct={UsGoToSingleProduct}
+                UsFavs={props.UsFavs}
+                UsRemoveFavAct={(i) => props.UsremoveFavAction(i)}
+                UsSetFavAct={(i) => props.UssetFavAction(i)}
+              />
+            )}
+          />
         </View>
       </ScrollView>
     </WrapperScreen>
@@ -61,21 +67,14 @@ const styles = StyleSheet.create({
   },
   fav_SL1: {
     flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-    paddingHorizontal: Measurements.width * 0.027,
+    paddingLeft: Measurements.width * 0.027,
     paddingTop: Measurements.height * 0.025,
-    borderTopLeftRadius: 35,
-    borderTopRightRadius: 35,
   },
 });
 
 const mapStateToProps = (state) => {
   return {
-    ourFavs: state.UsToggleFav,
+    UsFavs: state.UsToggleFav,
   };
 };
 

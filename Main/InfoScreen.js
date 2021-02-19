@@ -1,34 +1,36 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {Text, View, StyleSheet, TextInput, ImageBackground} from 'react-native';
+import {Text, View, StyleSheet, TextInput} from 'react-native';
 import {connect} from 'react-redux';
 import WrapperScreen from '../UsResuables/WrapperScreen';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Measurements} from '../UsResuables/Measurement';
 import {colors} from '../UsResuables/frequentColors';
-import {Button} from 'react-native-elements';
-import UseHeader from '../UsResuables/MyHeader';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Button, Overlay} from 'react-native-elements';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import {isFormValid} from '../UsResuables/validation';
-import NavigationRef from '../UsResuables/RefNavigation';
-import {UserAction} from '../UsReduxStore/UsActions';
+import NavPointer from '../UsResuables/RefNavigation';
+import {UserAction, UsresetCart} from '../UsReduxStore/UsActions';
 import Toast from 'react-native-root-toast';
+import UseHeader from '../UsResuables/MyHeader';
 
 const ConfirmOrder = (props) => {
   const [firstName, setFirstName] = useState('');
-  const [firstNameErrMsg, setFirstNameErrMsg] = useState('');
-  const [lastName, setLastName] = useState('');
   const [lastNameErrMsg, setLastNameErrMsg] = useState('');
   const [email, setEmail] = useState('');
+  const [firstNameErrMsg, setFirstNameErrMsg] = useState('');
+  const [lastName, setLastName] = useState('');
   const [emailErrMsg, setEmailErrMsg] = useState('');
+  const [showModal, setShowModal] = useState(false);
   const [phone, setPhone] = useState('');
   const [phoneErrMsg, setPhoneErrMsg] = useState('');
+  const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState('');
   const [addressErrMsg, setAddressErrMsg] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  const ConfirmTakenEasy = () => {
+  const Confirm = () => {
     const formValidResponse = isFormValid(
       firstName,
       lastName,
@@ -40,11 +42,11 @@ const ConfirmOrder = (props) => {
       errorMsgHandler(formValidResponse.errCategory, formValidResponse.errMsg);
     } else {
       CallApi();
-      UserAction({
+      props.UserAction({
         firstName: firstName,
-        phone: phone,
-        email: email,
         lastName: lastName,
+        email: email,
+        phone: phone,
         address: address,
       });
     }
@@ -53,11 +55,9 @@ const ConfirmOrder = (props) => {
   const ShowToast = (msg) => {
     Toast.show(msg, {
       backgroundColor: colors.secondary,
-      textColor: colors.primary,
+      textColor: 'white',
       opacity: 1,
       position: -60,
-      duration: Toast.durations.SHORT,
-      onHidden: () => NavigationRef.Push('UsHome'),
     });
   };
 
@@ -72,20 +72,18 @@ const ConfirmOrder = (props) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            firstname: firstName,
-            lastname: lastName,
             phonenumber: phone,
-            email: email,
-            appname: 'Shining Light',
+            firstname: firstName,
             address: address,
+            lastname: lastName,
+            email: email,
+            appname: 'Juice Fruitify',
           }),
         },
       );
       const response = await res.json();
       setLoading(false);
-      response.status
-        ? ShowToast('Your Order has been recieved')
-        : ShowToast('Some error occurred');
+      response.status ? setShowModal(true) : ShowToast('Some error occurred');
     } catch (error) {
       console.log(error);
     }
@@ -94,68 +92,64 @@ const ConfirmOrder = (props) => {
   const errorMsgHandler = (errCategory, errMsg) => {
     if (errCategory === 'email') {
       setEmailErrMsg(errMsg);
-      setLastNameErrMsg('');
-      setAddressErrMsg('');
-      setPhoneErrMsg('');
       setFirstNameErrMsg('');
+      setLastNameErrMsg('');
+      setPhoneErrMsg('');
+      setAddressErrMsg('');
     } else if (errCategory === 'firstname') {
       setFirstNameErrMsg(errMsg);
-      setPhoneErrMsg('');
-      setEmailErrMsg('');
       setLastNameErrMsg('');
+      setEmailErrMsg('');
+      setPhoneErrMsg('');
       setAddressErrMsg('');
     } else if (errCategory === 'lastname') {
-      setPhoneErrMsg('');
-      setEmailErrMsg('');
       setLastNameErrMsg(errMsg);
+      setEmailErrMsg('');
       setFirstNameErrMsg('');
+      setPhoneErrMsg('');
       setAddressErrMsg('');
     } else if (errCategory === 'phone') {
       setPhoneErrMsg(errMsg);
       setFirstNameErrMsg('');
-      setAddressErrMsg('');
       setLastNameErrMsg('');
       setEmailErrMsg('');
+      setAddressErrMsg('');
     } else if (errCategory === 'address') {
+      setAddressErrMsg(errMsg);
       setPhoneErrMsg('');
       setFirstNameErrMsg('');
-      setAddressErrMsg(errMsg);
       setLastNameErrMsg('');
       setEmailErrMsg('');
     }
   };
 
-  const changeLastName = (t) => setLastName(t);
-  const changeAddress = (t) => setAddress(t);
-  const changeEmail = (t) => setEmail(t);
-  const goBack = () => NavigationRef.GoBack();
+  const closeModal = () => {
+    setShowModal(false);
+    props.UsresetCart();
+    NavPointer.Push('UsHome');
+  };
+
   const changeFirstName = (t) => setFirstName(t);
+  const changeLastName = (t) => setLastName(t);
+  const changeEmail = (t) => setEmail(t);
   const changePhone = (t) => setPhone(t);
+  const changeAddress = (t) => setAddress(t);
+  const goBack = () => NavPointer.GoBack();
 
   return (
-    <WrapperScreen style={{backgroundColor: colors.primary}}>
-      <UseHeader
-        leftIcon={Ionicons}
-        leftIconName="chevron-back"
-        leftIconAction={goBack}
-        Title="Contact Information"
-        titleStyle={{fontSize: Measurements.width * 0.06, color: 'white'}}
-        leftIconColor="white"
-      />
+    <WrapperScreen style={{backgroundColor: colors.lightBackground}}>
       <KeyboardAwareScrollView style={styles.container}>
+        <UseHeader
+          leftIcon={AntDesign}
+          Title="Checkout"
+          leftIconName="arrowleft"
+          leftIconAction={goBack}
+        />
         <View style={styles.summaryOverlay}>
-          <View style={styles.EP_2}>
-            <ImageBackground
-              source={props.UsProduct.images}
-              style={styles.EP_3}
-              resizeMode="contain"
-            />
-          </View>
-          <Text style={styles.EP_4}>{props.UsProduct.productName}</Text>
           <View style={styles.sm1}>
             <View style={styles.sm2}>
               <Text>Total:</Text>
-              <Text style={{fontWeight: 'bold'}}>${props.UsProduct.price}</Text>
+              <Text style={{fontWeight: 'bold'}}>${props.total}</Text>
             </View>
             <View style={styles.sm3}>
               <Text style={styles.sm4}>Payment Mode:</Text>
@@ -163,13 +157,15 @@ const ConfirmOrder = (props) => {
             </View>
           </View>
         </View>
+        <View style={styles.personalInfoWrapper}>
+          <Text style={styles.personalInfoHeader}>Contact Info</Text>
+        </View>
         <View style={styles.PersonalInfoWrapper}>
           <View style={styles.singlePersonalInfoWrapper}>
             <Text
               style={{
                 ...styles.personalInfoHeadingName,
-                color: firstNameErrMsg ? 'white' : colors.primary,
-                backgroundColor: firstNameErrMsg ? 'red' : colors.primary,
+                color: firstNameErrMsg ? 'red' : colors.primary,
               }}>
               FIRST NAME <Text> {firstNameErrMsg}</Text>
             </Text>
@@ -190,8 +186,7 @@ const ConfirmOrder = (props) => {
             <Text
               style={{
                 ...styles.personalInfoHeadingName,
-                color: lastNameErrMsg ? 'white' : colors.primary,
-                backgroundColor: lastNameErrMsg ? 'red' : colors.primary,
+                color: lastNameErrMsg ? 'red' : colors.primary,
               }}>
               LAST NAME <Text> {lastNameErrMsg}</Text>
             </Text>
@@ -212,8 +207,7 @@ const ConfirmOrder = (props) => {
             <Text
               style={{
                 ...styles.personalInfoHeadingName,
-                color: emailErrMsg ? 'white' : colors.primary,
-                backgroundColor: emailErrMsg ? 'red' : colors.primary,
+                color: emailErrMsg ? 'red' : colors.primary,
               }}>
               EMAIL<Text> {emailErrMsg}</Text>
             </Text>
@@ -234,8 +228,7 @@ const ConfirmOrder = (props) => {
             <Text
               style={{
                 ...styles.personalInfoHeadingName,
-                color: phoneErrMsg ? 'white' : colors.primary,
-                backgroundColor: phoneErrMsg ? 'red' : colors.primary,
+                color: phoneErrMsg ? 'red' : colors.primary,
               }}>
               PHONE<Text> {phoneErrMsg}</Text>
             </Text>
@@ -257,8 +250,7 @@ const ConfirmOrder = (props) => {
             <Text
               style={{
                 ...styles.personalInfoHeadingName,
-                color: addressErrMsg ? 'white' : colors.primary,
-                backgroundColor: addressErrMsg ? 'red' : colors.primary,
+                color: addressErrMsg ? 'red' : colors.primary,
               }}>
               ADDRESS<Text> {addressErrMsg}</Text>
             </Text>
@@ -281,13 +273,28 @@ const ConfirmOrder = (props) => {
             title="CONFIRM ORDER"
             raised
             buttonStyle={styles.confirmButton}
-            titleStyle={{color: colors.primary, fontWeight: 'bold'}}
+            titleStyle={{color: 'white', fontWeight: 'bold'}}
             containerStyle={styles.confirmButtonContainer}
-            onPress={ConfirmTakenEasy}
+            onPress={Confirm}
             loading={loading}
-            loadingProps={{color: colors.primary}}
           />
         </View>
+        <Overlay
+          isVisible={showModal}
+          onBackdropPress={closeModal}
+          animationType="fade">
+          <View style={styles.ModalWrapper}>
+            <FontAwesome
+              name="check-circle-o"
+              size={Measurements.width * 0.25}
+              color={colors.primary}
+            />
+            <Text style={styles.ModalHeadText}>THANK YOU!</Text>
+            <Text style={styles.ModalSubText}>
+              Your Order has been confirmed
+            </Text>
+          </View>
+        </Overlay>
       </KeyboardAwareScrollView>
     </WrapperScreen>
   );
@@ -295,32 +302,16 @@ const ConfirmOrder = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    UsProduct: state.UsCrntPrdtReducer,
+    pdt: state.UsCrntPrdtReducer,
+    total: state.UsCartReducer.totalAmount,
   };
 };
 
-export default connect(mapStateToProps, {UserAction})(React.memo(ConfirmOrder));
+export default connect(mapStateToProps, {UserAction, UsresetCart})(
+  React.memo(ConfirmOrder),
+);
 
 const styles = StyleSheet.create({
-  EP_4: {
-    width: '100%',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: 'white',
-    marginVertical: Measurements.height * 0.01,
-  },
-  EP_3: {
-    overflow: 'hidden',
-    width: Measurements.width * 0.42,
-    height: '100%',
-  },
-  EP_2: {
-    backgroundColor: `rgba(${colors.rgb_Primary}, 0.45)`,
-    paddingBottom: Measurements.height * 0.045,
-    paddingHorizontal: Measurements.width * 0.02,
-    height: Measurements.width * 0.55,
-    borderRadius: 15,
-  },
   sm4: {fontSize: Measurements.width * 0.03, fontWeight: 'bold'},
   sm3: {
     flexDirection: 'row',
@@ -334,7 +325,7 @@ const styles = StyleSheet.create({
   },
   sm1: {
     width: '75%',
-    backgroundColor: 'white',
+    backgroundColor: colors.secondary,
     borderRadius: 50,
     elevation: 2,
     shadowColor: '#000',
@@ -347,12 +338,63 @@ const styles = StyleSheet.create({
     padding: Measurements.width * 0.04,
   },
   summaryOverlay: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: Measurements.height * 0.02,
   },
-
+  connecter3: {
+    backgroundColor: colors.primary,
+    width: '3%',
+    height: Measurements.height * 0.05,
+  },
+  connecter2: {
+    width: '80%',
+    height: Measurements.height * 0.02,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  connectorOverlayCenter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  detailprice: {
+    color: colors.lightGrey3,
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  detailInner2: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    width: Measurements.width * 0.35,
+  },
+  TileImage: {
+    width: Measurements.width * 0.3,
+    height: Measurements.width * 0.35,
+  },
+  ModalSubText: {
+    fontSize: Measurements.width * 0.045,
+    color: colors.darkGray,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  ModalHeadText: {
+    fontSize: Measurements.width * 0.09,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  ModalWrapper: {
+    paddingVertical: Measurements.height * 0.04,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: Measurements.width * 0.8,
+  },
   confirmButtonContainer: {
     width: '100%',
     shadowColor: '#000',
@@ -363,9 +405,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    borderRadius: 50,
   },
   confirmButton: {
-    backgroundColor: 'white',
+    backgroundColor: colors.primary,
     padding: Measurements.height * 0.018,
   },
   ConfirmButtonWrapper: {
@@ -396,20 +439,64 @@ const styles = StyleSheet.create({
     paddingHorizontal: Measurements.width * 0.02,
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: colors.lightGrey2,
+    borderColor: colors.primary,
   },
   personalInfoHeadingName: {
     fontSize: 13,
     fontWeight: 'bold',
     marginVertical: 6,
-    textAlign: 'center',
-    borderRadius: 50,
   },
   singlePersonalInfoWrapper: {
     marginVertical: 10,
   },
   PersonalInfoWrapper: {
     marginHorizontal: Measurements.width * 0.035,
+    marginVertical: 20,
+  },
+  personalInfoHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  personalInfoWrapper: {
+    marginHorizontal: Measurements.width * 0.035,
+  },
+  bookingDetailsWrapper: {
+    borderColor: colors.primary,
+    borderWidth: 2,
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderRadius: 50,
+    padding: 10,
+    marginVertical: Measurements.height * 0.01,
+    backgroundColor: colors.primary,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+  ProductName: {
+    color: colors.secondary,
+    fontSize: 18,
+    fontWeight: 'bold',
+    width: Measurements.width * 0.35,
+  },
+  DetailWrapper: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    marginLeft: Measurements.width * 0.06,
+    position: 'relative',
+  },
+  bookingDetailsCenterOverlay: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {flex: 1},
 });

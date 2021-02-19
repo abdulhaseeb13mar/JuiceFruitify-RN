@@ -4,11 +4,12 @@ import {View, StyleSheet, Text} from 'react-native';
 import WrapperScreen from '../UsResuables/WrapperScreen';
 import {Measurements} from '../UsResuables/Measurement';
 import NavigationRef from '../UsResuables/RefNavigation';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SearchBar from '../UsResuables/searchingBar';
 import Data from '../UsDummyData';
-import {NewArrivals} from './UsHome';
+import {FruityTiles} from './UsHome';
+import Loop from '../UsResuables/looping';
 import {connect} from 'react-redux';
 import {
   UssetCurrentProductAction,
@@ -22,11 +23,11 @@ function Search(props) {
 
   const RenderSearchedResult = () => {
     var SearchedItems = Data.product.filter((item) =>
-      item.productName.toLowerCase().includes(searchText.toLowerCase()),
+      item.name.toLowerCase().includes(searchText.toLowerCase()),
     );
     return SearchedItems.length === 0 ? (
       <Text style={{fontWeight: 'bold', textAlign: 'center'}}>
-        No Lamp Found...
+        Nothing Found...
       </Text>
     ) : (
       CardRender(SearchedItems)
@@ -39,16 +40,20 @@ function Search(props) {
   };
 
   const CardRender = (Arr) => {
-    return Arr.map((item) => (
-      <NewArrivals
-        key={item.id}
-        item={{...item}}
-        UsGoToSingleProduct={UsGoToSingleProduct}
-        UsFavs={props.ourFavs}
-        UsRemoveFavAct={(i) => props.UsremoveFavAction(i)}
-        UsSetFavAct={(i) => props.UssetFavAction(i)}
+    return (
+      <Loop
+        data={Arr}
+        renderItem={({item}) => (
+          <FruityTiles
+            item={item}
+            UsGoToSingleProduct={UsGoToSingleProduct}
+            UsFavs={props.UsFavs}
+            UsRemoveFavAct={(i) => props.UsremoveFavAction(i)}
+            UsSetFavAct={(i) => props.UssetFavAction(i)}
+          />
+        )}
       />
-    ));
+    );
   };
   const UsGoBack = () => NavigationRef.GoBack();
 
@@ -56,9 +61,9 @@ function Search(props) {
   return (
     <WrapperScreen style={{backgroundColor: 'white'}}>
       <UseHeader
-        leftIcon={AntDesign}
-        Title="All Lamps"
-        leftIconName="arrowleft"
+        leftIcon={Entypo}
+        leftIconName="chevron-left"
+        Title="Everything Here"
         leftIconAction={UsGoBack}
       />
       <View style={styles.SearchBarWrapper}>
@@ -76,7 +81,7 @@ function Search(props) {
 }
 
 const mapStateToProps = (state) => ({
-  ourFavs: state.UsToggleFav,
+  UsFavs: state.UsToggleFav,
 });
 
 export default connect(mapStateToProps, {

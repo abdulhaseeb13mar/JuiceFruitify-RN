@@ -5,7 +5,6 @@ import {
   Text,
   ImageBackground,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import {Measurements} from '../UsResuables/Measurement';
@@ -16,8 +15,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../UsResuables/frequentColors';
 import NavigationRef from '../UsResuables/RefNavigation';
 import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {UsremoveFavAction, UssetFavAction} from '../UsReduxStore/UsActions';
+import {
+  UsremoveFavAction,
+  UssetFavAction,
+  UsaddCartAction,
+  UsremoveCartAction,
+} from '../UsReduxStore/UsActions';
 import StarRating from '../StarRating/rating';
 
 function SingleProduct(props) {
@@ -31,15 +34,21 @@ function SingleProduct(props) {
   const UsProduct = props.UsProduct;
 
   const checkIfFav = () => {
-    for (let i = 0; i < props.UsFavs.length; i++) {
-      if (props.UsFavs[i].id === UsProduct.id) {
+    for (let us = 0; us < props.UsFavs.length; us++) {
+      if (props.UsFavs[us].id === UsProduct.id) {
         setFav(true);
         break;
       }
     }
   };
 
-  const UsGoToInfo = () => NavigationRef.Navigate('PersonalInfoShiningLamp');
+  const UsAddToCart = () => props.UsaddCartAction(UsProduct);
+
+  const UsRemoveFromCart = () => {
+    props.UsCart[UsProduct.id] !== undefined
+      ? props.UsremoveCartAction(UsProduct)
+      : null;
+  };
 
   const toggleFav = () => {
     fav
@@ -54,19 +63,77 @@ function SingleProduct(props) {
     <WrapperScreen style={{backgroundColor: colors.primary}}>
       <View style={styles.singleProduct_SL20}>
         <View style={styles.singleProduct_SL19}>
+          <View
+            style={{
+              width: Measurements.width * 0.14,
+              height: Measurements.width * 0.14,
+              backgroundColor: 'white',
+              borderRadius: 50,
+              opacity: 0.2,
+              transform: [{scaleX: 4.5}, {scaleY: 4}],
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+            }}
+          />
+          <View
+            style={{
+              width: Measurements.width * 0.14,
+              height: Measurements.width * 0.14,
+              backgroundColor: 'white',
+              borderRadius: 50,
+              opacity: 0.2,
+              transform: [{scaleX: 3.0}, {scaleY: 2.7}],
+              position: 'absolute',
+              top: 0,
+              left: 0,
+            }}
+          />
           <ImageBackground
             resizeMode="contain"
             source={UsProduct.images}
             style={styles.singleProduct_SL18}>
-            <TouchableOpacity
-              style={styles.singleProduct_SL17}
-              onPress={toggleFav}>
-              <Ionicons
-                name={fav ? 'ios-heart' : 'ios-heart-outline'}
-                color={'white'}
-                size={Measurements.width * 0.08}
-              />
-            </TouchableOpacity>
+            <View
+              style={{
+                marginTop: Measurements.height * 0.025,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <TouchableOpacity
+                style={styles.singleProduct_SL17}
+                onPress={UsGoBack}>
+                <Entypo
+                  name="chevron-left"
+                  color={'white'}
+                  size={Measurements.width * 0.08}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={toggleFav}
+                style={{
+                  width: Measurements.width * 0.12,
+                  height: Measurements.width * 0.12,
+                  borderRadius: 50,
+                  backgroundColor: 'white',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  elevation: 3,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.22,
+                  shadowRadius: 2.22,
+                }}>
+                <Ionicons
+                  name={fav ? 'ios-heart' : 'ios-heart-outline'}
+                  color="red"
+                  size={Measurements.width * 0.06}
+                />
+              </TouchableOpacity>
+            </View>
           </ImageBackground>
         </View>
         <View style={styles.singleProduct_SL16}>
@@ -86,10 +153,9 @@ function SingleProduct(props) {
               <Text style={styles.singleProduct_SL22}>{UsProduct.rating}</Text>
             </View>
           </View>
-          <View style={{...border, width: '100%'}}>
+          <View style={{width: '100%'}}>
             <Text
               style={{
-                ...border,
                 fontWeight: 'bold',
                 fontSize: Measurements.width * 0.048,
               }}>
@@ -122,10 +188,9 @@ function SingleProduct(props) {
               ))}
             </View>
           </View>
-          <View style={{...border, width: '100%'}}>
+          <View style={{width: '100%'}}>
             <Text
               style={{
-                ...border,
                 fontWeight: 'bold',
                 fontSize: Measurements.width * 0.048,
               }}>
@@ -170,16 +235,40 @@ function SingleProduct(props) {
             </View>
           </View>
           <View style={styles.singleProduct_SL3}>
-            <TouchableOpacity
-              onPress={UsGoBack}
-              style={styles.singleProduct_SL2}>
-              <Entypo name="cross" color={colors.darkGray} size={20} />
-            </TouchableOpacity>
+            <View style={styles.singleProduct_SL2}>
+              <TouchableOpacity
+                onPress={
+                  props.UsCart[UsProduct.id] !== undefined &&
+                  props.UsCart[UsProduct.id] !== 0
+                    ? UsRemoveFromCart
+                    : null
+                }>
+                <Ionicons
+                  name="ios-remove"
+                  color={colors.lightGrey3}
+                  size={Measurements.width * 0.065}
+                />
+              </TouchableOpacity>
+              <Text style={styles.singleProduct_SL23}>
+                {props.UsCart[UsProduct.id] !== undefined &&
+                props.UsCart[UsProduct.id] !== 0
+                  ? props.UsCart[UsProduct.id].added
+                  : '0'}
+              </Text>
+              <TouchableOpacity onPress={UsAddToCart}>
+                <Ionicons
+                  name="ios-add"
+                  color={colors.lightGrey3}
+                  size={Measurements.width * 0.065}
+                />
+              </TouchableOpacity>
+            </View>
             <Button
-              title="Buy Now"
-              onPress={UsGoToInfo}
+              raised
+              title="Add To Cart"
+              onPress={UsAddToCart}
               buttonStyle={styles.singleProduct_SL1}
-              containerStyle={{width: '78%'}}
+              containerStyle={{width: '50%'}}
             />
           </View>
         </View>
@@ -188,12 +277,11 @@ function SingleProduct(props) {
   );
 }
 
-const border = {
-  borderColor: 'red',
-  borderWidth: 1,
-};
-
 const styles = StyleSheet.create({
+  singleProduct_SL23: {
+    fontWeight: 'bold',
+    fontSize: Measurements.width * 0.056,
+  },
   singleProduct_SL22: {
     marginLeft: Measurements.width * 0.045,
     color: colors.darkGray,
@@ -205,7 +293,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    ...border,
     alignSelf: 'flex-start',
   },
   singleProduct_SL20: {
@@ -217,10 +304,8 @@ const styles = StyleSheet.create({
     width: Measurements.width,
     height: Measurements.height * 0.37,
     paddingHorizontal: Measurements.width * 0.05,
-    ...border,
   },
   singleProduct_SL18: {width: '100%', height: '100%'},
-  singleProduct_SL17: {zIndex: 3, marginTop: Measurements.height * 0.02},
   singleProduct_SL16: {
     backgroundColor: 'white',
     borderTopRightRadius: 30,
@@ -338,11 +423,13 @@ const styles = StyleSheet.create({
     borderColor: colors.lightBackground2,
     borderWidth: 1,
     backgroundColor: 'white',
-    borderRadius: 10,
-    width: '20%',
-    height: Measurements.height * 0.07,
+    borderRadius: 50,
+    width: '40%',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: Measurements.width * 0.015,
+    paddingVertical: Measurements.height * 0.01,
   },
   singleProduct_SL1: {
     height: Measurements.height * 0.07,
@@ -355,10 +442,13 @@ const mapStateToProps = (state) => {
   return {
     UsProduct: state.UsCrntPrdtReducer,
     UsFavs: state.UsToggleFav,
+    UsCart: state.UsCartReducer.items,
   };
 };
 
 export default connect(mapStateToProps, {
   UssetFavAction,
   UsremoveFavAction,
+  UsremoveCartAction,
+  UsaddCartAction,
 })(React.memo(SingleProduct));

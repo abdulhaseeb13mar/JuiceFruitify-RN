@@ -7,9 +7,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import Navigator from './UsResuables/RefNavigation';
 import UsHome from './Main/UsHome';
 import UsSingleProduct from './Main/UsSingleProduct';
-// import PersonalInfoShiningLamp from './Main/PersonalInfoShiningLamp';
-// import SearchShiningLamp from './Main/SearchShiningLamp';
-// import OurFavourites from './Main/OurFavourites';
+import UsCart from './Main/UsCart';
+import InfoScreen from './Main/InfoScreen';
+import SearchJuiceFruitify from './Main/SearchJuiceFruitify';
+import UsFavourites from './Main/UsFavourites';
 const Stack = createStackNavigator();
 
 function Routes(props) {
@@ -26,12 +27,13 @@ function Routes(props) {
         }}>
         <Stack.Screen name="UsHome" component={UsHome} />
         <Stack.Screen name="UsSingleProduct" component={UsSingleProduct} />
-        {/* <Stack.Screen
-          name="PersonalInfoShiningLamp"
-          component={PersonalInfoShiningLamp}
-        /> */}
-        {/* <Stack.Screen name="SearchShiningLamp" component={SearchShiningLamp} /> */}
-        {/* <Stack.Screen name="OurFavourites" component={OurFavourites} /> */}
+        <Stack.Screen name="UsCart" component={UsCart} />
+        <Stack.Screen
+          name="SearchJuiceFruitify"
+          component={SearchJuiceFruitify}
+        />
+        <Stack.Screen name="UsFavourites" component={UsFavourites} />
+        <Stack.Screen name="InfoScreen" component={InfoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

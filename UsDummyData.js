@@ -25,6 +25,7 @@ export default {
       rating: '3.8',
       price: '3',
       images: require('./UsPics/a1.png'),
+      added: 0,
     },
     {
       id: '2',
@@ -33,6 +34,7 @@ export default {
       rating: '4.5',
       price: '2.88',
       images: require('./UsPics/a2.png'),
+      added: 0,
     },
     {
       id: '3',
@@ -41,6 +43,7 @@ export default {
       rating: '3.9',
       price: '3.5',
       images: require('./UsPics/a3.png'),
+      added: 0,
     },
     {
       id: '4',
@@ -49,6 +52,7 @@ export default {
       rating: '3.5',
       price: '4',
       images: require('./UsPics/a4.png'),
+      added: 0,
     },
     {
       id: '5',
@@ -57,6 +61,7 @@ export default {
       rating: '4',
       price: '4.5',
       images: require('./UsPics/a5.png'),
+      added: 0,
     },
     {
       id: '6',
@@ -65,6 +70,7 @@ export default {
       rating: '3.4',
       price: '5',
       images: require('./UsPics/a6.png'),
+      added: 0,
     },
     {
       id: '7',
@@ -73,6 +79,7 @@ export default {
       rating: '3.6',
       price: '3.5',
       images: require('./UsPics/a7.png'),
+      added: 0,
     },
     {
       id: '8',
@@ -81,6 +88,7 @@ export default {
       rating: '3.8',
       price: '2.99',
       images: require('./UsPics/b1.png'),
+      added: 0,
     },
     {
       id: '9',
@@ -89,6 +97,7 @@ export default {
       rating: '4.1',
       price: '4',
       images: require('./UsPics/b2.png'),
+      added: 0,
     },
     {
       id: '10',
@@ -97,6 +106,7 @@ export default {
       rating: '3.9',
       price: '15',
       images: require('./UsPics/b3.png'),
+      added: 0,
     },
     {
       id: '11',
@@ -105,6 +115,7 @@ export default {
       rating: '3.3',
       price: '18',
       images: require('./UsPics/b4.png'),
+      added: 0,
     },
     {
       id: '12',
@@ -113,6 +124,7 @@ export default {
       rating: '4.2',
       price: '2',
       images: require('./UsPics/b5.png'),
+      added: 0,
     },
     {
       id: '13',
@@ -121,6 +133,7 @@ export default {
       rating: '3.6',
       price: '3',
       images: require('./UsPics/b6.png'),
+      added: 0,
     },
     {
       id: '14',
@@ -129,6 +142,7 @@ export default {
       rating: '3.7',
       price: '5',
       images: require('./UsPics/c1.png'),
+      added: 0,
     },
     {
       id: '15',
@@ -137,6 +151,7 @@ export default {
       rating: '3.2',
       price: '4.99',
       images: require('./UsPics/c2.png'),
+      added: 0,
     },
     {
       id: '16',
@@ -145,6 +160,7 @@ export default {
       rating: '4.8',
       price: '3.5',
       images: require('./UsPics/c3.png'),
+      added: 0,
     },
     {
       id: '17',
@@ -153,6 +169,7 @@ export default {
       rating: '3.2',
       price: '6',
       images: require('./UsPics/c4.png'),
+      added: 0,
     },
     {
       id: '18',
@@ -161,6 +178,7 @@ export default {
       rating: '3.4',
       price: '4.99',
       images: require('./UsPics/d1.png'),
+      added: 0,
     },
     {
       id: '19',
@@ -169,6 +187,7 @@ export default {
       rating: '3.8',
       price: '3',
       images: require('./UsPics/d2.png'),
+      added: 0,
     },
     {
       id: '20',
@@ -177,6 +196,7 @@ export default {
       rating: '3.5',
       price: '2.88',
       images: require('./UsPics/d3.png'),
+      added: 0,
     },
     {
       id: '21',
@@ -185,6 +205,7 @@ export default {
       rating: '3.8',
       price: '3.5',
       images: require('./UsPics/d4.png'),
+      added: 0,
     },
     {
       id: '22',
@@ -193,6 +214,7 @@ export default {
       rating: '3.5',
       price: '4',
       images: require('./UsPics/d5.png'),
+      added: 0,
     },
     {
       id: '23',
@@ -201,6 +223,7 @@ export default {
       rating: '4',
       price: '4.5',
       images: require('./UsPics/d6.png'),
+      added: 0,
     },
   ],
   details: [

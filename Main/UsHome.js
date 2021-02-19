@@ -22,9 +22,9 @@ import {
 } from '../UsReduxStore/UsActions';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MyHeader from '../UsResuables/MyHeader';
 import Search from '../UsResuables/searchingBar';
-import c from '../UsPics/a6.png';
 
 function UsHome(props) {
   useEffect(() => {
@@ -41,8 +41,9 @@ function UsHome(props) {
     setUsTabProducts(fPrd);
   };
 
-  // const UsGotoFavourites = () => RefNavigation.NavigateAndReset('UsFavourites');
-  // const UsGotoSearch = () => RefNavigation.Navigate('SearchShiningLamp');
+  const UsGotoFavourites = () => RefNavigation.NavigateAndReset('UsFavourites');
+  const UsGotoCart = () => RefNavigation.NavigateAndReset('UsCart');
+  const UsGotoSearch = () => RefNavigation.Navigate('SearchJuiceFruitify');
   const UsGoToSingleProduct = (item) => {
     props.UssetCurrentProductAction(item);
     RefNavigation.NavigateAndReset('UsSingleProduct');
@@ -51,13 +52,19 @@ function UsHome(props) {
     <WrapperScreen style={{backgroundColor: colors.lightGrey4}}>
       <ScrollView bounces={false} style={{flex: 1}}>
         <MyHeader
-          leftIcon={Feather}
-          leftIconName="shopping-bag"
-          // leftIconAction={GotoCart}
-          // rightIconAction={GotoSearch}
+          leftIcon={Ionicons}
+          leftIconName="ios-heart-outline"
+          leftIconAction={UsGotoFavourites}
+          rightIconAction={UsGotoCart}
           rightIcon={Feather}
           rightIconName="shopping-bag"
-          Title=""
+          Title={
+            <FontAwesome5
+              color={'black'}
+              size={Measurements.width * 0.09}
+              name="glass-cheers"
+            />
+          }
         />
         <View
           style={{
@@ -65,7 +72,7 @@ function UsHome(props) {
             justifyContent: 'center',
             marginVertical: Measurements.height * 0.02,
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={UsGotoSearch}>
             <Search editable={false} />
           </TouchableOpacity>
         </View>
@@ -73,7 +80,6 @@ function UsHome(props) {
         <View
           style={{
             marginVertical: Measurements.height * 0.02,
-            ...border,
           }}>
           <Loop
             data={UScategories}
@@ -90,9 +96,9 @@ function UsHome(props) {
               <FruityTiles
                 item={item}
                 UsGoToSingleProduct={UsGoToSingleProduct}
-                // UsFavs={props.ourFavs}
-                // UsRemoveFavAct={(i) => props.UsremoveFavAction(i)}
-                // UsSetFavAct={(i) => props.UssetFavAction(i)}
+                UsFavs={props.UsFavs}
+                UsRemoveFavAct={(i) => props.UsremoveFavAction(i)}
+                UsSetFavAct={(i) => props.UssetFavAction(i)}
               />
             )}
           />
@@ -122,22 +128,25 @@ const FruitifyTabs = ({item, Uscc, Usct}) => {
   );
 };
 
-const FruityTiles = ({
+export const FruityTiles = ({
   item,
   UsGoToSingleProduct,
   UsFavs,
   UsRemoveFavAct,
   UsSetFavAct,
+  UsaddCartAction,
+  UsremoveCartAction,
+  isCart,
 }) => {
   useEffect(() => {
-    // checkIfFav();
+    checkIfFav();
   }, []);
 
   const [fav, setFav] = useState(false);
 
   const checkIfFav = () => {
-    for (let i = 0; i < UsFavs.length; i++) {
-      if (UsFavs[i].id === item.id) {
+    for (let us = 0; us < UsFavs.length; us++) {
+      if (UsFavs[us].id === item.id) {
         setFav(true);
         break;
       }
@@ -148,113 +157,176 @@ const FruityTiles = ({
     setFav(!fav);
   };
   return (
-    <TouchableOpacity
-      onPress={() => UsGoToSingleProduct(item)}
+    <View
       style={{
         width: Measurements.width * 0.66,
         borderRadius: 18,
         marginLeft: Measurements.width * 0.05,
-        height: Measurements.height * 0.55,
-        elevation: 5,
-        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}>
       <View
         style={{
-          // ...border,
-          borderRadius: 18,
-          height: '100%',
-          backgroundColor: 'rgba(255,123,34,0.9)',
-          overflow: 'hidden',
-          position: 'relative',
-          paddingTop: Measurements.height * 0.035,
-          paddingBottom: Measurements.height * 0.02,
-          paddingHorizontal: Measurements.width * 0.03,
+          width: '100%',
+          height: Measurements.height * 0.55,
         }}>
         <View
           style={{
-            width: 50,
-            height: 50,
             backgroundColor: 'white',
-            borderRadius: 50,
-            opacity: 0.2,
-            transform: [{scaleX: 4.5}, {scaleY: 4}],
-            position: 'absolute',
-            bottom: 0,
-          }}
-        />
-        <View
-          style={{
-            ...border,
-            flexDirection: 'row',
-            alignItems: 'flex-end',
-            justifyContent: 'space-between',
-            marginBottom: Measurements.height * 0.015,
+            borderRadius: 18,
+            elevation: 5,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
           }}>
-          <Text
+          <TouchableOpacity
+            onPress={() => UsGoToSingleProduct(item)}
             style={{
-              ...border,
-              color: 'white',
-              fontSize: Measurements.width * 0.06,
-              fontWeight: 'bold',
-              width: '75%',
-            }}>
-            {item.name}
-          </Text>
-          <Text
-            style={{
-              ...border,
-              color: 'white',
-              fontSize: Measurements.width * 0.05,
-              // width: '75%',
-            }}>
-            $
-            <Text
-              style={{
-                fontSize: Measurements.width * 0.065,
-                fontWeight: 'bold',
-              }}>
-              {item.price}
-            </Text>
-          </Text>
-        </View>
-        <View style={{...border, flex: 1}}>
-          <ImageBackground
-            source={item.images}
-            resizeMode="contain"
-            style={{
-              width: '100%',
+              borderRadius: 18,
               height: '100%',
-              alignItems: 'flex-start',
-              justifyContent: 'flex-end',
+              backgroundColor: 'rgba(255,123,34,0.9)',
+              overflow: 'hidden',
+              position: 'relative',
+              paddingTop: Measurements.height * 0.035,
+              paddingBottom: Measurements.height * 0.02,
+              paddingHorizontal: Measurements.width * 0.03,
             }}>
             <View
               style={{
-                width: Measurements.width * 0.12,
-                height: Measurements.width * 0.12,
-                borderRadius: 50,
+                width: 50,
+                height: 50,
                 backgroundColor: 'white',
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 3,
+                borderRadius: 50,
+                opacity: 0.2,
+                transform: [{scaleX: 4.5}, {scaleY: 4}],
+                position: 'absolute',
+                bottom: 0,
+              }}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'flex-end',
+                justifyContent: 'space-between',
+                marginBottom: Measurements.height * 0.015,
               }}>
-              <Ionicons
-                name="ios-heart"
-                color="red"
-                size={Measurements.width * 0.06}
-              />
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: Measurements.width * 0.06,
+                  fontWeight: 'bold',
+                  width: '75%',
+                }}>
+                {item.name}
+              </Text>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: Measurements.width * 0.05,
+                }}>
+                $
+                <Text
+                  style={{
+                    fontSize: Measurements.width * 0.065,
+                    fontWeight: 'bold',
+                  }}>
+                  {item.price}
+                </Text>
+              </Text>
             </View>
-          </ImageBackground>
+            <View style={{flex: 1}}>
+              <ImageBackground
+                source={item.images}
+                resizeMode="contain"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-end',
+                }}>
+                <TouchableOpacity
+                  onPress={toggleFav}
+                  style={{
+                    width: Measurements.width * 0.12,
+                    height: Measurements.width * 0.12,
+                    borderRadius: 50,
+                    backgroundColor: 'white',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    elevation: 3,
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 0.22,
+                    shadowRadius: 2.22,
+                  }}>
+                  <Ionicons
+                    name={fav ? 'ios-heart' : 'ios-heart-outline'}
+                    color="red"
+                    size={Measurements.width * 0.06}
+                  />
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
-    </TouchableOpacity>
+      {isCart && (
+        <View style={styles.home_TE16}>
+          <View style={styles.home_TE17}>
+            <TouchableOpacity onPress={() => UsremoveCartAction(item)}>
+              <Feather
+                name="minus-circle"
+                size={Measurements.width * 0.05}
+                color={colors.primary}
+              />
+            </TouchableOpacity>
+            <Text style={{fontWeight: 'bold', color: colors.primary}}>
+              {item.added}
+            </Text>
+            <TouchableOpacity onPress={() => UsaddCartAction(item)}>
+              <Feather
+                name="plus-circle"
+                size={Measurements.width * 0.05}
+                color={colors.primary}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    </View>
   );
 };
 
-const border = {
-  // borderColor: 'red',
-  // borderWidth: 1,
-};
 const styles = StyleSheet.create({
+  home_TE17: {
+    flexDirection: 'row',
+    marginVertical: Measurements.height * 0.013,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  home_TE16: {
+    width: '50%',
+    backgroundColor: 'white',
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    elevation: 3,
+    paddingHorizontal: Measurements.width * 0.03,
+    paddingVertical: Measurements.height * 0.003,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+  },
   UsHome_SL9: {},
   UsHome_SL8: {},
   UsHome_SL7: {},
@@ -314,7 +386,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    ourFavs: state.UsToggleFav,
+    UsFavs: state.UsToggleFav,
   };
 };
 

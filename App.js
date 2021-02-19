@@ -9,7 +9,7 @@
 import React from 'react';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {Provider} from 'react-redux';
-import store from './OurReduxStore/OurStore';
+import store from './UsReduxStore/UsStore';
 import Routes from './routes';
 import RNBootSplash from 'react-native-bootsplash';
 

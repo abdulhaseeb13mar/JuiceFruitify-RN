@@ -4,12 +4,12 @@ import {
   CardStyleInterpolators,
 } from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import Navigator from './OurResuables/RefNavigation';
-import OurHome from './Main/OurHome';
-import OurSingleProduct from './Main/OurSingleProduct';
-import PersonalInfoShiningLamp from './Main/PersonalInfoShiningLamp';
-import SearchShiningLamp from './Main/SearchShiningLamp';
-import OurFavourites from './Main/OurFavourites';
+import Navigator from './UsResuables/RefNavigation';
+import OurHome from './Main/UsHome';
+// import OurSingleProduct from './Main/OurSingleProduct';
+// import PersonalInfoShiningLamp from './Main/PersonalInfoShiningLamp';
+// import SearchShiningLamp from './Main/SearchShiningLamp';
+// import OurFavourites from './Main/OurFavourites';
 const Stack = createStackNavigator();
 
 function Routes(props) {
@@ -25,13 +25,13 @@ function Routes(props) {
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}>
         <Stack.Screen name="OurHome" component={OurHome} />
-        <Stack.Screen name="OurSingleProduct" component={OurSingleProduct} />
-        <Stack.Screen
+        {/* <Stack.Screen name="OurSingleProduct" component={OurSingleProduct} /> */}
+        {/* <Stack.Screen
           name="PersonalInfoShiningLamp"
           component={PersonalInfoShiningLamp}
-        />
-        <Stack.Screen name="SearchShiningLamp" component={SearchShiningLamp} />
-        <Stack.Screen name="OurFavourites" component={OurFavourites} />
+        /> */}
+        {/* <Stack.Screen name="SearchShiningLamp" component={SearchShiningLamp} /> */}
+        {/* <Stack.Screen name="OurFavourites" component={OurFavourites} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
